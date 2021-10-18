@@ -10,10 +10,12 @@ using System.Collections.Specialized;
 namespace ConsoleWebApi
 {
     class Program
+    
     {
+        static string ServiceAddress;
         static void Main(string[] args)
         {
-
+            ServiceAddress = ConfigurationManager.AppSettings.Get("Service");
 
             while (true)
             {
@@ -36,13 +38,19 @@ namespace ConsoleWebApi
                     Post(name, desc);
 
                 }
+                else if (answer == "exit")
+                {
+                    break;
+
+                }
             }
-            
+
         }
 
         public static void Get ()
         {
-            WebRequest req = WebRequest.Create("https://localhost:44361/api/categories");
+            // "https://localhost:44361/api/categories"
+            WebRequest req = WebRequest.Create(ServiceAddress+ "/api/categories");
             WebResponse myResponse = req.GetResponse();
 
             string response;
@@ -76,7 +84,7 @@ namespace ConsoleWebApi
             json["Description"] = desc;
 
 
-            WebRequest req = WebRequest.Create("https://localhost:44361/api/categories");
+            WebRequest req = WebRequest.Create(ServiceAddress + "/api/categories");
             req.Method = "POST";
 
             req.ContentType = "application/json";
